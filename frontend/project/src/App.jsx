@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import AboutPage from './pages/AboutPage';
+import QuizHub from './pages/Quiz/QuizHub';
 
 function App() {
   const [triggerLogin, setTriggerLogin] = useState(false);
@@ -106,6 +107,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home onGetStarted={handleGetStarted} />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/quiz" element={<QuizHub />} />
           </Routes>
         </div>
       </div>

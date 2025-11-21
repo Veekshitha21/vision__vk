@@ -32,17 +32,18 @@ export default function Navbar({ triggerLogin }) {
             <Link to="/" className="text-gray-300 hover:text-blue-400 transition-colors">
               Home
             </Link>
-            <a href="#features" className="text-gray-300 hover:text-blue-400 transition-colors">
-              Features
-            </a>
             <Link to="/about" className="text-gray-300 hover:text-blue-400 transition-colors">
               About Us
             </Link>
+            <a href="#pyq" className="text-gray-300 hover:text-blue-400 transition-colors">
+              Previous Year Questions (PYQ)
+            </a>
+            <Link to="/quiz" className="text-gray-300 hover:text-blue-400 transition-colors">
+              Quiz
+            </Link>
             {isLoggedIn ? (
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold">
-                  U
-                </div>
+              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold">
+                U
               </div>
             ) : (
               <button
@@ -71,13 +72,6 @@ export default function Navbar({ triggerLogin }) {
             >
               Home
             </Link>
-            <a
-              href="#features"
-              className="block text-gray-300 hover:text-blue-400 transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Features
-            </a>
             <Link
               to="/about"
               className="block text-gray-300 hover:text-blue-400 transition-colors"
@@ -85,8 +79,22 @@ export default function Navbar({ triggerLogin }) {
             >
               About Us
             </Link>
+            <a
+              href="#pyq"
+              className="block text-gray-300 hover:text-blue-400 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Previous Year Questions (PYQ)
+            </a>
+            <Link
+              to="/quiz"
+              className="block text-gray-300 hover:text-blue-400 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Quiz
+            </Link>
             {isLoggedIn ? (
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3 pt-2">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold">
                   U
                 </div>
