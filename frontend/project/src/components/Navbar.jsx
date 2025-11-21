@@ -10,13 +10,11 @@ export default function Navbar({ triggerLogin }) {
   useEffect(() => {
     if (triggerLogin) {
       setIsLoggedIn(true);
-      // You can add additional login logic here
     }
   }, [triggerLogin]);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
-    // You can add additional login logic here
   };
 
   return (
@@ -55,10 +53,7 @@ export default function Navbar({ triggerLogin }) {
             )}
           </div>
 
-          <button
-            className="md:hidden text-white"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
+          <button className="md:hidden text-white" onClick={() => setIsMenuOpen(!isMenuOpen)}>
             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>

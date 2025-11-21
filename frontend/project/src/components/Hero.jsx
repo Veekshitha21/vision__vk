@@ -18,20 +18,31 @@ export default function Hero({ onGetStarted }) {
   };
 
   return (
-    <section id="home" className="pt-16 bg-gradient-to-br from-[#1e3a5f]/50 via-[#2563eb]/30 to-[#06b6d4]/50">
+    <section id="home" className="pt-16 bg-gradient-to-br from-[#010818]/90 via-[#05123a]/80 to-primary-900/60">
       <div className="w-full px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-16">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-            Welcome to <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">Vision</span>
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-extrabold text-white mb-6 leading-tight drop-shadow-xl">
+            <span className="text-white">Welcome to </span>
+            <span className="text-accent-400">Vision</span>
           </h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
+            <div className="flex flex-wrap justify-center items-center gap-10 text-3xl md:text-4xl font-display font-semibold uppercase tracking-[0.2em] text-accent-300 mb-8">
+            {['Inspire', 'Ignite', 'Impact'].map((word) => (
+              <span
+                key={word}
+                className="inline-block px-3 drop-shadow-lg leading-[1.25]"
+              >
+                {word}
+              </span>
+            ))}
+          </div>
+          <p className="text-xl text-slate-200 max-w-3xl mx-auto leading-relaxed mb-8">
             Empowering students with comprehensive resources, scholarships, and innovative learning tools.
             Transform your academic journey with our curated study materials, previous year questions,
             and interactive quizzes designed to help you excel.
           </p>
           <button
             onClick={handleGetStarted}
-            className="px-8 py-4 bg-gradient-to-r from-teal-400 to-cyan-500 text-white text-lg font-semibold rounded-lg hover:from-teal-500 hover:to-cyan-600 transition-all duration-300 transform hover:scale-105 shadow-lg"
+            className="px-8 py-4 bg-gradient-to-r from-primary-500 to-primary-300 text-white text-lg font-display font-semibold rounded-lg hover:from-primary-400 hover:to-primary-500 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-primary-500/40 tracking-wide"
           >
             Get Started
           </button>
@@ -40,7 +51,7 @@ export default function Hero({ onGetStarted }) {
 
       {/* Moving photos carousel */}
       <div className="relative h-[400px] overflow-hidden w-full">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-transparent z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-primary-900/40 via-primary-700/10 to-transparent z-10"></div>
         <div className="flex gap-4 h-full animate-scroll">
           {[...images, ...images].map((img, idx) => (
             <div

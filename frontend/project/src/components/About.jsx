@@ -59,20 +59,20 @@ const teamMembers = [
 
 export default function About() {
   return (
-    <section id="about" className="py-20 bg-gradient-to-br from-[#1e3a5f]/60 via-[#2563eb]/40 to-[#06b6d4]/60">
+    <section id="about" className="py-20 bg-gradient-to-br from-midnight via-onyx to-primary-900/70">
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
             About Vision
           </h2>
-          <p className="text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-slate-200 max-w-3xl mx-auto leading-relaxed">
             Vision is a comprehensive educational platform dedicated to supporting students
             in their academic endeavors. We believe that every student deserves access to quality
             education resources, regardless of their background or circumstances.
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto text-gray-200 text-lg leading-relaxed space-y-4 mb-16">
+        <div className="max-w-4xl mx-auto text-slate-200 text-lg leading-relaxed space-y-4 mb-16">
           <p>
             Our platform brings together scholarships, carefully curated study materials, extensive
             collections of previous year questions, and engaging quizzes to create a holistic
@@ -88,10 +88,10 @@ export default function About() {
         </div>
 
         <div className="text-center mb-12">
-          <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">
+          <h3 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">
             Our Team
           </h3>
-          <p className="text-lg text-gray-200">
+          <p className="text-lg text-slate-200">
             Meet the passionate people behind Vision
           </p>
         </div>
@@ -100,37 +100,37 @@ export default function About() {
           {teamMembers.map((member, index) => (
             <div
               key={index}
-              className="bg-gradient-to-br from-[#1e3a5f]/80 to-[#2563eb]/60 p-6 rounded-2xl border border-cyan-400/20 hover:border-cyan-400/40 transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-500/20 transform hover:-translate-y-2"
+              className="bg-gradient-to-br from-onyx via-primary-900/80 to-midnight p-6 rounded-2xl border border-primary-700/30 hover:border-primary-400/50 transition-all duration-300 hover:shadow-2xl hover:shadow-primary-500/20 transform hover:-translate-y-2"
             >
               <div className="text-center">
-                <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-cyan-400/30">
+                <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-accent-400/40">
                   <img
                     src={member.image}
                     alt={member.name}
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <h4 className="text-2xl font-bold text-white mb-2">{member.name}</h4>
-                <p className="text-cyan-300 mb-3 font-semibold">{member.role}</p>
-                <p className="text-gray-200 text-sm mb-4 leading-relaxed">{member.bio}</p>
+                <h4 className="text-2xl font-display font-bold text-white mb-2">{member.name}</h4>
+                <p className="text-accent-400 mb-3 font-semibold">{member.role}</p>
+                <p className="text-slate-200 text-sm mb-4 leading-relaxed">{member.bio}</p>
                 <div className="flex justify-center space-x-4">
                   <a
                     href={member.linkedin}
-                    className="text-cyan-300 hover:text-cyan-200 transition-colors"
+                    className="text-accent-400 hover:text-accent-300 transition-colors"
                     aria-label="LinkedIn"
                   >
                     <Linkedin className="w-5 h-5" />
                   </a>
                   <a
                     href={`mailto:${member.email}`}
-                    className="text-cyan-300 hover:text-cyan-200 transition-colors"
+                    className="text-accent-400 hover:text-accent-300 transition-colors"
                     aria-label="Email"
                   >
                     <Mail className="w-5 h-5" />
                   </a>
                   <a
                     href={member.github}
-                    className="text-cyan-300 hover:text-cyan-200 transition-colors"
+                    className="text-accent-400 hover:text-accent-300 transition-colors"
                     aria-label="GitHub"
                   >
                     <Github className="w-5 h-5" />
