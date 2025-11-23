@@ -17,6 +17,52 @@ export default function Navbar({ triggerLogin }) {
     setIsLoggedIn(true);
   };
 
+  const publicLinks = [
+    { id: 'home', type: 'link', label: 'Home', to: '/' },
+    { id: 'about', type: 'link', label: 'About Us', to: '/about' },
+    { id: 'features', type: 'anchor', label: 'Features', href: '#features' }
+  ];
+
+  const privateLinks = [
+    { id: 'study-material', type: 'link', label: 'Study Material', to: '/study-material' },
+    { id: 'pyq', type: 'link', label: 'PYQ', to: '/pyq' },
+    { id: 'quiz', type: 'link', label: 'Quiz', to: '/quiz' },
+    { id: 'admin', type: 'link', label: 'Admin', to: '/admin' }
+  ];
+
+  const navLinks = isLoggedIn 
+    ? [...publicLinks.filter(link => link.id !== 'features'), ...privateLinks]
+    : publicLinks;
+
+  const linkClass = 'text-gray-300 hover:text-blue-400 transition-colors';
+  const mobileLinkClass = 'block text-gray-300 hover:text-blue-400 transition-colors';
+
+  const renderLink = (link, isMobile = false) => {
+    if (link.type === 'link') {
+      return (
+        <Link
+          key={link.id}
+          to={link.to}
+          className={isMobile ? mobileLinkClass : linkClass}
+          onClick={() => isMobile && setIsMenuOpen(false)}
+        >
+          {link.label}
+        </Link>
+      );
+    }
+
+    return (
+      <a
+        key={link.id}
+        href={link.href}
+        className={isMobile ? mobileLinkClass : linkClass}
+        onClick={() => isMobile && setIsMenuOpen(false)}
+      >
+        {link.label}
+      </a>
+    );
+  };
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#1e3a5f]/90 via-[#2563eb]/85 to-[#06b6d4]/90 backdrop-blur-sm">
       <div className="w-full px-4 sm:px-6 lg:px-8">
@@ -27,18 +73,7 @@ export default function Navbar({ triggerLogin }) {
           </div>
 
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-gray-300 hover:text-blue-400 transition-colors">
-              Home
-            </Link>
-            <Link to="/about" className="text-gray-300 hover:text-blue-400 transition-colors">
-              About Us
-            </Link>
-            <a href="#pyq" className="text-gray-300 hover:text-blue-400 transition-colors">
-              Previous Year Questions (PYQ)
-            </a>
-            <Link to="/quiz" className="text-gray-300 hover:text-blue-400 transition-colors">
-              Quiz
-            </Link>
+            {navLinks.map((link) => renderLink(link))}
             {isLoggedIn ? (
               <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold">
                 U
@@ -60,34 +95,7 @@ export default function Navbar({ triggerLogin }) {
 
         {isMenuOpen && (
           <div className="md:hidden py-4 space-y-4">
-            <Link
-              to="/"
-              className="block text-gray-300 hover:text-blue-400 transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Home
-            </Link>
-            <Link
-              to="/about"
-              className="block text-gray-300 hover:text-blue-400 transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              About Us
-            </Link>
-            <a
-              href="#pyq"
-              className="block text-gray-300 hover:text-blue-400 transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Previous Year Questions (PYQ)
-            </a>
-            <Link
-              to="/quiz"
-              className="block text-gray-300 hover:text-blue-400 transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Quiz
-            </Link>
+            {navLinks.map((link) => renderLink(link, true))}
             {isLoggedIn ? (
               <div className="flex items-center space-x-3 pt-2">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold">

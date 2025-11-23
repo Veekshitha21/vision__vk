@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { auth, db } from '../../firebase';
 import { collection, query, where, getDocs, addDoc, doc, getDoc, updateDoc, onSnapshot, serverTimestamp } from 'firebase/firestore';
-import { ArrowLeft, Clock, Trophy, Users } from 'lucide-react';
+import { ArrowLeft, Clock, Trophy, Users, Video, VideoOff, AlertTriangle } from 'lucide-react';
 import QuizScorecard from './QuizScorecard';
 import { getBadgeForPoints } from './BadgeDisplay';
 
@@ -17,6 +17,104 @@ export default function LiveQuiz({ onBack, user }) {
   const [scorecard, setScorecard] = useState(null);
   const [loading, setLoading] = useState(true);
   const [countdown, setCountdown] = useState(null);
+  
+  // Security features
+  const [cameraAccess, setCameraAccess] = useState(false);
+  const [cameraError, setCameraError] = useState('');
+  const [tabSwitchCount, setTabSwitchCount] = useState(0);
+  const [isTabVisible, setIsTabVisible] = useState(true);
+  const videoRef = useRef(null);
+  const streamRef = useRef(null);
+
+  // Request camera access
+  useEffect(() => {
+    const requestCamera = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { facingMode: 'user' },
+          audio: false 
+        });
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          streamRef.current = stream;
+        }
+        setCameraAccess(true);
+        setCameraError('');
+      } catch (error) {
+        console.error('Camera access error:', error);
+        setCameraError('Camera access is required for live quiz. Please enable camera permissions.');
+        setCameraAccess(false);
+      }
+    };
+
+    if (quizStarted) {
+      requestCamera();
+    }
+
+    return () => {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, [quizStarted]);
+
+  // Tab switching detection
+  useEffect(() => {
+    if (!quizStarted) return;
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        setIsTabVisible(false);
+        setTabSwitchCount(prev => prev + 1);
+        // Warn user about tab switching
+        if (tabSwitchCount >= 2) {
+          alert('Warning: Multiple tab switches detected. Your quiz may be terminated.');
+        }
+      } else {
+        setIsTabVisible(true);
+      }
+    };
+
+    const handleBlur = () => {
+      setTabSwitchCount(prev => prev + 1);
+    };
+
+    const handleContextMenu = (e) => {
+      e.preventDefault();
+      return false;
+    };
+
+    const handleKeyDown = (e) => {
+      // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+      if (
+        e.key === 'F12' ||
+        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) ||
+        (e.ctrlKey && e.key === 'U')
+      ) {
+        e.preventDefault();
+        return false;
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('blur', handleBlur);
+    document.addEventListener('contextmenu', handleContextMenu);
+    document.addEventListener('keydown', handleKeyDown);
+
+    // Request fullscreen
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen().catch(err => {
+        console.log('Fullscreen not available:', err);
+      });
+    }
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('blur', handleBlur);
+      document.removeEventListener('contextmenu', handleContextMenu);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [quizStarted, tabSwitchCount]);
 
   useEffect(() => {
     const fetchActiveQuiz = async () => {
@@ -303,7 +401,46 @@ export default function LiveQuiz({ onBack, user }) {
     const userAnswer = answers[currentQuestion?.id];
 
     return (
-      <div className="min-h-screen custom-beige py-8 px-4">
+      <div className="min-h-screen custom-beige py-8 px-4 relative">
+        {/* Security Warnings */}
+        {!isTabVisible && (
+          <div className="fixed top-0 left-0 right-0 bg-red-600 text-white p-4 text-center z-50 flex items-center justify-center gap-2">
+            <AlertTriangle className="h-5 w-5" />
+            <span className="font-bold">Warning: Tab switch detected! Please return to the quiz tab.</span>
+          </div>
+        )}
+        
+        {!cameraAccess && (
+          <div className="fixed top-0 left-0 right-0 bg-yellow-600 text-white p-4 text-center z-50 flex items-center justify-center gap-2">
+            <VideoOff className="h-5 w-5" />
+            <span className="font-bold">Camera access required. Please enable camera permissions.</span>
+          </div>
+        )}
+
+        {/* Camera Preview */}
+        <div className="fixed top-4 right-4 z-40 bg-black rounded-lg overflow-hidden shadow-2xl border-2 border-red-500">
+          <video
+            ref={videoRef}
+            autoPlay
+            playsInline
+            muted
+            className="w-48 h-36 object-cover"
+          />
+          <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-white text-xs p-2 flex items-center gap-2">
+            {cameraAccess ? (
+              <>
+                <Video className="h-4 w-4 text-green-400" />
+                <span>Camera Active</span>
+              </>
+            ) : (
+              <>
+                <VideoOff className="h-4 w-4 text-red-400" />
+                <span>Camera Offline</span>
+              </>
+            )}
+          </div>
+        </div>
+
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Quiz Area */}
           <div className="lg:col-span-2">
