@@ -1,8 +1,13 @@
 import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import AboutPage from './pages/AboutPage';
+import QuizHub from './pages/Quiz/QuizHub';
+import StudyMaterial from './pages/StudyMaterial';
+import PYQ from './pages/PYQ';
+import AdminDashboard from './pages/Admin/AdminDashboard';
+import { ThemeProvider } from './contexts/ThemeContext';
 
 function App() {
   const [triggerLogin, setTriggerLogin] = useState(false);
@@ -35,8 +40,9 @@ function App() {
   };
 
   return (
-    <Router>
-      <div className="min-h-screen bg-gradient-to-b from-[#010818] via-[#05123a] to-black relative overflow-hidden text-white">
+    <ThemeProvider>
+      <Router>
+        <div className="min-h-screen bg-gradient-to-b from-[#010818] via-[#05123a] to-black relative overflow-hidden text-white">
       {/* Geometric Background Shapes */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <div
@@ -223,10 +229,16 @@ function App() {
           <Routes>
             <Route path="/" element={<Home onGetStarted={handleGetStarted} />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/quiz" element={<QuizHub />} />
+            <Route path="/study-material" element={<StudyMaterial />} />
+            <Route path="/pyq" element={<PYQ />} />
+            <Route path="/admin" element={<AdminDashboard onLogout={() => window.location.href = '/'} />} />
+            <Route path="/admin/login" element={<div className="min-h-screen flex items-center justify-center text-white">Admin Login Page - Your friend will implement this</div>} />
           </Routes>
         </div>
       </div>
     </Router>
+    </ThemeProvider>
   );
 }
 
